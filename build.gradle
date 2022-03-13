@@ -25,7 +25,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'com.example.testapplicationjava'
-    mainClass = 'com.example.testapplicationjava.HelloApplication'
+    mainClass = 'com.example.testapplicationjava.LinkApplication'
 }
 
 javafx {
@@ -38,6 +38,13 @@ dependencies {
         exclude(group: 'org.openjfx')
     }
     implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
+
+    // For the boilerplate programming
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    // For logging into the console
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
