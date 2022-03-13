@@ -11,7 +11,7 @@ public class EmployeeTab extends Tab {
     }
 
     private void init() {
-        this.setText("Employee");   // set the tab's title
+        this.setText("Employee");                       // set the tab's title
         this.setContent(getEmployeeMainBorderPane());   // set the content
     }
 

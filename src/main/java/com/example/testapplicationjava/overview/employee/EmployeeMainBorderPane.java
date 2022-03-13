@@ -33,7 +33,7 @@ public class EmployeeMainBorderPane extends BorderPane {
 
     private Button getCreateEmployeeButton() {
         if (createEmployeeButton == null) {
-            createEmployeeButton = new Button("Create employee");
+            createEmployeeButton = new Button("Create");
             createEmployeeButton.setOnAction(event -> {
                 log.info("Create employee clicked");
             });

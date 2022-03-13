@@ -1,4 +1,4 @@
-package com.example.testapplicationjava.overview.employee;
+package com.example.testapplicationjava.overview.company;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,27 +7,34 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class EmployeeCompanyHBox extends HBox {
+public class CompanyListHBox extends HBox {
 
-    private Label companyLabel = null;
+    private Label selectCompanyLabel = null;
     private ObservableList<String> companiesList = null;
     private ComboBox companiesComboBox = null;
 
-    public EmployeeCompanyHBox() {
+    public CompanyListHBox() {
         init();
     }
 
-    private void init() {
+    private void init(){
         // Configure the layout
         this.setPadding(new Insets(10));
         this.setSpacing(10);
 
         // Add elements
-        this.getChildren().add(getCompanyLabel());
+        this.getChildren().add(getSelectCompanyLabel());
         this.getChildren().add(getCompaniesComboBox());
     }
 
-    private ObservableList<String> getCompaniesList() {
+    public Label getSelectCompanyLabel() {
+        if (selectCompanyLabel == null) {
+            selectCompanyLabel = new Label("Select a company: ");
+        }
+        return selectCompanyLabel;
+    }
+
+    public ObservableList<String> getCompaniesList() {
         if (companiesList == null) {
             companiesList = FXCollections.observableArrayList(
                     "Company 1",
@@ -38,17 +45,10 @@ public class EmployeeCompanyHBox extends HBox {
         return companiesList;
     }
 
-    private ComboBox getCompaniesComboBox() {
+    public ComboBox getCompaniesComboBox() {
         if (companiesComboBox == null) {
             companiesComboBox = new ComboBox(getCompaniesList());
         }
         return companiesComboBox;
-    }
-
-    private Label getCompanyLabel() {
-        if (companyLabel == null) {
-            companyLabel = new Label("Company: ");
-        }
-        return companyLabel;
     }
 }
