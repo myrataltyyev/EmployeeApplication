@@ -1,4 +1,4 @@
-package com.example.testapplicationjava.overview;
+package com.example.testapplicationjava.overview.company;
 
 import javafx.scene.control.Tab;
 
