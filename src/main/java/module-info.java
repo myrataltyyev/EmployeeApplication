@@ -6,6 +6,8 @@ module com.example.testapplicationjava {
     requires org.kordamp.bootstrapfx.core;
     requires lombok;
     requires org.slf4j;
+    requires javafx.graphics;
+    requires java.sql;
 
     opens com.example.testapplicationjava to javafx.fxml;
     exports com.example.testapplicationjava;
