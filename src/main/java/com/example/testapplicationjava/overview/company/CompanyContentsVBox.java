@@ -67,6 +67,7 @@ public class CompanyContentsVBox extends VBox {
                     alert.setHeaderText("Error in creation");
                     alert.setContentText("Couldn't create a company. Please, don't leave the fields empty " +
                             "and look at the length of the name.");
+                    alert.getDialogPane().setStyle("-fx-font-size: 16px;"); // doesn't work with CSS, might be a bug
                     alert.showAndWait();
 
                 } else {
@@ -76,8 +77,9 @@ public class CompanyContentsVBox extends VBox {
                     );
 
                     // Update the combo boxes
-                    getCompanyListHBox().setCompaniesComboBox();            // in the company tab
-                    getEmployeeCompanyListHBox().setCompaniesComboBox();    // in the employee tab
+                    getCompanyListHBox().setCompaniesComboBox();            // company tab
+                    getCompanyListHBox().getCompaniesComboBox().setValue(companyName);
+                    getEmployeeCompanyListHBox().setCompaniesComboBox();    // employee tab
                 }
             });
         }

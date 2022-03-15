@@ -1,6 +1,6 @@
 # TestApplicationJava
 
-> I still need to improve the UI and the duplicate check for the data.
+> I still need to look at the scenario where the duplicate data is submitted.
 
 ## Employee Application
 
@@ -13,5 +13,8 @@ I called it Employee Application, couldn't find a better name. It is a desktop a
 **model package** is where the data are retrieved and related objects are stored. All sql statements use prepared statements for the safety check (against SQL injection attacks). Moreover, correctness of the fields' lengths and emptiness checks are performed whenever the information is going to be stored.
 
 **database files** are stored in the docker directory. `docker-compose.yaml` file will create a docker image of PostgreSQL and Adminer panel to control from the web (localhost:8080). Alternatively pgAdmin can also be used to connect to the docker container. `data` folder is copy of the container volume while the `EmployeeDB.sql.gz` file is an exported sql file.
+
+### Entity Relationship diagram
+![Entity Relationship diagram](ER_diagram.pdf)
 
 > Note: I shouldn't have included the .env file. It is for testing purposes. 

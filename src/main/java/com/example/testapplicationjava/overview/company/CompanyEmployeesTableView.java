@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class CompanyEmployeesTableView extends TableView {
     public CompanyEmployeesTableView(ObservableList<Employee> employees) {
         super(employees);
+        setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         init();
     }
 

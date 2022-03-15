@@ -16,7 +16,7 @@ public class OverviewTabPane extends TabPane {
     private void initialize() {
         // Configure the layout
         this.setPrefWidth(800);
-        this.setPrefHeight(600);
+        this.setPrefHeight(700);
 
         // Add tabs
         this.getTabs().add(getEmployeeTab());
