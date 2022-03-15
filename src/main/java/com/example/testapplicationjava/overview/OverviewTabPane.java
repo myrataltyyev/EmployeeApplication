@@ -6,8 +6,8 @@ import javafx.scene.control.TabPane;
 
 public class OverviewTabPane extends TabPane {
 
-    private EmployeeTab employeeTab = null;
-    private CompanyTab companyTab = null;
+    private static EmployeeTab employeeTab = null;
+    private static CompanyTab companyTab = null;
 
     public OverviewTabPane() {
         initialize();
@@ -23,14 +23,14 @@ public class OverviewTabPane extends TabPane {
         this.getTabs().add(getCompanyTab());
     }
 
-    public EmployeeTab getEmployeeTab() {
+    public static EmployeeTab getEmployeeTab() {
         if (employeeTab == null) {
             employeeTab = new EmployeeTab();
         }
         return employeeTab;
     }
 
-    public CompanyTab getCompanyTab() {
+    public static CompanyTab getCompanyTab() {
         if (companyTab == null) {
             companyTab = new CompanyTab();
         }

@@ -12,25 +12,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class EmployeeDataHandler {
+public enum EmployeeDataHandler {
+    INSTANCE;
 
+    // Employee related variables
     private List<Employee> employees = null;
     private String firstName = null;
     private String lastName = null;
     private String companyName = null;
 
+    // DB related variables
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
     private Connection connection = null;
-    private final String SELECT_QUERY =
-            "SELECT first_name, last_name, name \n" +
-                    "FROM \"Employee\" e, \"Company\" c \n" +
-                    "WHERE c.cid=e.cid AND c.cid=1;";
 
-    private List<Employee> getEmployees(int cid) {
-        if (employees == null) {
-            employees = new ArrayList<>();
-        }
+    // Query statements
+    private final String SELECT_QUERY =
+            "SELECT first_name, last_name, company_name \n" +
+                    "FROM \"Employee\" e, \"Company\" c \n" +
+                    "WHERE c.cid=e.cid AND c.company_name = ?;";
+    private final String INSERT_QUERY =
+            "INSERT INTO \"Employee\"(first_name, last_name, cid) " +
+                    "SELECT ?, ? " +
+                    "FROM \"Company\" " +
+                    "WHERE company_name = ?;";
+
+    public List<Employee> getEmployees(String companyName) {
+        employees = new ArrayList<>();
 
         try {
             // Connect to DB
@@ -39,7 +47,7 @@ public class EmployeeDataHandler {
 
             //Create a prepared statement
             preparedStatement = connection.prepareStatement(SELECT_QUERY);
-            preparedStatement.setInt(1, cid);
+            preparedStatement.setString(1, companyName);
 
             // Execute the query
             resultSet = preparedStatement.executeQuery();
@@ -51,21 +59,44 @@ public class EmployeeDataHandler {
                 lastName = resultSet.getString("last_name");
                 companyName = resultSet.getString("company_name");
 
-                log.info(String.format("%s %s %s", firstName, lastName, companyName));
-
                 employees.add(new Employee(firstName, lastName, companyName));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error(e.getMessage());
+        } finally {
+            DatabaseConnection.disconnect();
+            log.info("Successfully disconnected from DB");
         }
 
         return employees;
     }
 
-    public ObservableList<Employee> employeesObservableList() {
-        ObservableList<Employee> observableList = FXCollections.observableList(getEmployees());
-        return  observableList;
+    public void createEmployee(Employee employee) {
+        try {
+            // Connect to DB
+            connection = DatabaseConnection.connect();
+            log.info("Successfully connected to DB");
+
+            //Create a prepared statement
+            preparedStatement = connection.prepareStatement(INSERT_QUERY);
+            preparedStatement.setString(1, employee.getFirstName());
+            preparedStatement.setString(2, employee.getLastName());
+            preparedStatement.setString(3, employee.getCompanyName());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        } finally {
+            DatabaseConnection.disconnect();
+            log.info("Successfully disconnected from DB");
+        }
     }
 
+    public ObservableList<Employee> employeesObservableList(String companyName) {
+        ObservableList<Employee> observableList = FXCollections.observableList(getEmployees(companyName));
+        return  observableList;
+    }
 }

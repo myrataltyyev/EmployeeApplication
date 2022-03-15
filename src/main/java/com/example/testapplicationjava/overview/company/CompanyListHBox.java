@@ -1,7 +1,7 @@
 package com.example.testapplicationjava.overview.company;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.example.testapplicationjava.model.CompanyDataHandler;
+import com.example.testapplicationjava.model.EmployeeDataHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -10,10 +10,12 @@ import javafx.scene.layout.HBox;
 public class CompanyListHBox extends HBox {
 
     private Label selectCompanyLabel = null;
-    private ObservableList<String> companiesList = null;
     private ComboBox companiesComboBox = null;
+    private CompanyContentsVBox companyContentsVBox;
+    private CompanyEmployeesTableView companyEmployeesTableView;
 
-    public CompanyListHBox() {
+    public CompanyListHBox(CompanyContentsVBox companyContentsVBox) {
+        this.companyContentsVBox = companyContentsVBox;
         init();
     }
 
@@ -27,28 +29,31 @@ public class CompanyListHBox extends HBox {
         this.getChildren().add(getCompaniesComboBox());
     }
 
-    public Label getSelectCompanyLabel() {
+    private Label getSelectCompanyLabel() {
         if (selectCompanyLabel == null) {
             selectCompanyLabel = new Label("Select a company: ");
         }
         return selectCompanyLabel;
     }
 
-    public ObservableList<String> getCompaniesList() {
-        if (companiesList == null) {
-            companiesList = FXCollections.observableArrayList(
-                    "Company 1",
-                    "Company 2",
-                    "Company 3"
-            );
-        }
-        return companiesList;
-    }
-
-    public ComboBox getCompaniesComboBox() {
+    private ComboBox getCompaniesComboBox() {
         if (companiesComboBox == null) {
-            companiesComboBox = new ComboBox(getCompaniesList());
+            companiesComboBox = new ComboBox(CompanyDataHandler.INSTANCE.companiesObservableList());
+
+            // Show employee data
+            companiesComboBox.setOnAction(event -> {
+                companyEmployeesTableView = companyContentsVBox.getCompanyEmployeesTableView();
+                String selectedCompany = (String) companiesComboBox.getValue();
+
+                companyEmployeesTableView.setItems(
+                        EmployeeDataHandler.INSTANCE.employeesObservableList(selectedCompany));
+            });
         }
         return companiesComboBox;
+    }
+
+    public void setCompaniesComboBox() {
+        companiesComboBox.getItems().clear();
+        companiesComboBox.getItems().addAll(CompanyDataHandler.INSTANCE.companiesObservableList());
     }
 }

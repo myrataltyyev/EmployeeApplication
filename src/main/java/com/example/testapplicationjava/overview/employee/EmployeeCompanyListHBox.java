@@ -1,19 +1,18 @@
 package com.example.testapplicationjava.overview.employee;
 
-import javafx.collections.FXCollections;
+import com.example.testapplicationjava.model.CompanyDataHandler;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class EmployeeCompanyHBox extends HBox {
+public class EmployeeCompanyListHBox extends HBox {
 
     private Label companyLabel = null;
-    private ObservableList<String> companiesList = null;
     private ComboBox companiesComboBox = null;
 
-    public EmployeeCompanyHBox() {
+    public EmployeeCompanyListHBox() {
         init();
     }
 
@@ -27,22 +26,16 @@ public class EmployeeCompanyHBox extends HBox {
         this.getChildren().add(getCompaniesComboBox());
     }
 
-    private ObservableList<String> getCompaniesList() {
-        if (companiesList == null) {
-            companiesList = FXCollections.observableArrayList(
-                    "Company 1",
-                    "Company 2",
-                    "Company 3"
-            );
-        }
-        return companiesList;
-    }
-
     private ComboBox getCompaniesComboBox() {
         if (companiesComboBox == null) {
-            companiesComboBox = new ComboBox(getCompaniesList());
+            companiesComboBox = new ComboBox(CompanyDataHandler.INSTANCE.companiesObservableList());
         }
         return companiesComboBox;
+    }
+
+    public void setCompaniesComboBox() {
+        companiesComboBox.getItems().clear();
+        companiesComboBox.getItems().addAll(CompanyDataHandler.INSTANCE.companiesObservableList());
     }
 
     private Label getCompanyLabel() {

@@ -3,6 +3,7 @@ package com.example.testapplicationjava.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class DatabaseConnection {
 
@@ -11,8 +12,9 @@ public class DatabaseConnection {
     private static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/EmployeeDB";
 
     // Credentials
-    private static final String USER = System.getenv("POSTGRES_USER");
-    private static final String PASSWORD = System.getenv("POSTGRES_PASSWORD");
+    private static Dotenv dotenv = Dotenv.configure().ignoreIfMissing().ignoreIfMalformed().load();
+    private static final String USER = dotenv.get("POSTGRES_USER");
+    private static final String PASSWORD = dotenv.get("POSTGRES_PASSWORD");
 
     private static Connection connection = null;
 

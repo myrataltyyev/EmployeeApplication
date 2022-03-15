@@ -1,5 +1,11 @@
 package com.example.testapplicationjava.overview.company;
 
+import com.example.testapplicationjava.model.Company;
+import com.example.testapplicationjava.model.CompanyDataHandler;
+import com.example.testapplicationjava.model.EmployeeDataHandler;
+import com.example.testapplicationjava.overview.OverviewTabPane;
+import com.example.testapplicationjava.overview.employee.EmployeeCompanyListHBox;
+import com.example.testapplicationjava.overview.employee.EmployeeTab;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -12,6 +18,7 @@ public class CompanyContentsVBox extends VBox {
     private CompanyListHBox companyListHBox = null;
     private CompanyEmployeesTableView companyEmployeesTableView = null;
     private Button createCompanyButton = null;
+    private EmployeeTab employeeTab = null;
 
     public CompanyContentsVBox() {
         init();
@@ -29,34 +36,49 @@ public class CompanyContentsVBox extends VBox {
         this.getChildren().add(getCompanyEmployeesTableView());
     }
 
-    public CompanyNameHBox getCompanyNameHBox() {
+    private CompanyNameHBox getCompanyNameHBox() {
         if (companyNameHBox == null) {
             companyNameHBox = new CompanyNameHBox();
         }
         return companyNameHBox;
     }
 
-    public CompanyListHBox getCompanyListHBox() {
+    private CompanyListHBox getCompanyListHBox() {
         if (companyListHBox == null) {
-            companyListHBox = new CompanyListHBox();
+            companyListHBox = new CompanyListHBox(this);
         }
         return companyListHBox;
     }
 
-    public CompanyEmployeesTableView getCompanyEmployeesTableView() {
+    private Button getCreateCompanyButton() {
+        if (createCompanyButton == null) {
+            createCompanyButton = new Button("Create");
+
+            // Create new company
+            createCompanyButton.setOnAction(event -> {
+                CompanyDataHandler.INSTANCE.createCompany(
+                        new Company(getCompanyNameHBox().getNameTextField().getText())
+                );
+
+                // Update the combo boxes
+                getCompanyListHBox().setCompaniesComboBox();            // in the company tab
+                getEmployeeCompanyListHBox().setCompaniesComboBox();    // in the employee tab
+            });
+        }
+        return createCompanyButton;
+    }
+
+    protected CompanyEmployeesTableView getCompanyEmployeesTableView() {
         if (companyEmployeesTableView == null) {
-            companyEmployeesTableView = new CompanyEmployeesTableView();
+            companyEmployeesTableView = new CompanyEmployeesTableView(
+                    EmployeeDataHandler.INSTANCE.employeesObservableList(null));
         }
         return companyEmployeesTableView;
     }
 
-    public Button getCreateCompanyButton() {
-        if (createCompanyButton == null) {
-            createCompanyButton = new Button("Create");
-            createCompanyButton.setOnAction(event -> {
-                log.info("Create employee clicked");
-            });
-        }
-        return createCompanyButton;
+    // Access to the Employee tab
+    private EmployeeCompanyListHBox getEmployeeCompanyListHBox() {
+        return OverviewTabPane.getEmployeeTab().getEmployeeMainBorderPane()
+                .getEmployeeContentsVBox().getEmployeeCompanyListHBox();
     }
 }

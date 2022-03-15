@@ -7,7 +7,7 @@ public class EmployeeContentsVBox extends VBox {
 
     private EmployeeFirstNameHBox employeeFirstNameHBox = null;
     private EmployeeLastNameHBox employeeLastNameHBox = null;
-    private EmployeeCompanyHBox employeeCompanyHBox = null;
+    private EmployeeCompanyListHBox employeeCompanyHBox = null;
 
     public EmployeeContentsVBox() {
         init();
@@ -21,7 +21,7 @@ public class EmployeeContentsVBox extends VBox {
         // Add elements
         this.getChildren().add(getEmployeeFirstNameHBox());
         this.getChildren().add(getEmployeeLastNameHBox());
-        this.getChildren().add(getEmployeeCompanyHBox());
+        this.getChildren().add(getEmployeeCompanyListHBox());
     }
 
     public EmployeeFirstNameHBox getEmployeeFirstNameHBox() {
@@ -38,9 +38,9 @@ public class EmployeeContentsVBox extends VBox {
         return employeeLastNameHBox;
     }
 
-    public EmployeeCompanyHBox getEmployeeCompanyHBox() {
+    public EmployeeCompanyListHBox getEmployeeCompanyListHBox() {
         if (employeeCompanyHBox == null) {
-            employeeCompanyHBox = new EmployeeCompanyHBox();
+            employeeCompanyHBox = new EmployeeCompanyListHBox();
         }
         return employeeCompanyHBox;
     }
