@@ -80,13 +80,29 @@ public class EmployeeContentsVBox extends VBox {
 
                 } else {
                     // Create new employee
-                    EmployeeDataHandler.INSTANCE.createEmployee(new Employee(firstName, lastName, companyName));
+                    boolean successState = EmployeeDataHandler.INSTANCE.createEmployee(
+                            new Employee(firstName, lastName, companyName));
+
+                    if (successState) {
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information");
+                        alert.setHeaderText("Successfully created");
+                    } else {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error in creation");
+                        alert.setContentText("Couldn't create the employee. The employee already exists.");
+                    }
+                    alert.getDialogPane().setStyle("-fx-font-size: 16px;");
+                    alert.showAndWait();
 
                     // Get the current selection from the company tab
+                    // in order to update the table
                     String selectedCompany = (String) getCompanyContentsVBox().getCompanyListHBox()
                             .getCompaniesComboBox().getValue();
 
                     // Update the current selection of the table
+                    // if the added employee works for the selected company
                     if (companyName.equals(selectedCompany)) {
                         getCompanyContentsVBox().getCompanyEmployeesTableView().setItems(
                                 EmployeeDataHandler.INSTANCE.employeesObservableList(selectedCompany));

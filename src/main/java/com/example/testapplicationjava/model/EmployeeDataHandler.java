@@ -26,6 +26,9 @@ public enum EmployeeDataHandler {
     private ResultSet resultSet = null;
     private Connection connection = null;
 
+    // Flag to indicate the insertion result
+    private boolean successState;
+
     // Query statements
     private final String SELECT_QUERY =
             "SELECT first_name, last_name, company_name \n" +
@@ -72,18 +75,41 @@ public enum EmployeeDataHandler {
         return employees;
     }
 
-    public void createEmployee(Employee employee) {
+    public boolean createEmployee(Employee employee) {
+        successState = false;
         try {
+            // First check for the duplicate
+            // thus, get the list of employees from the DB
+            // who works for the same company as the given input
+            List<Employee> employeeList = getEmployees(employee.getCompanyName());
+            boolean exists = false;
+
+            // Iterate through the list and compare with the input
+            for (Employee employeeItem: employeeList) {
+                if (employeeItem.getFirstName().strip().equals(employee.getFirstName().strip())
+                        && employeeItem.getLastName().strip().equals(employee.getLastName().strip())){
+                    exists = true;
+                    successState = false;
+
+                    log.info("The employee who works for this company already exists in the database");
+                    return successState;
+                }
+            }
+
             // Connect to DB
             connection = DatabaseConnection.connect();
             log.info("Successfully connected to DB");
 
-            //Create a prepared statement
-            preparedStatement = connection.prepareStatement(INSERT_QUERY);
-            preparedStatement.setString(1, employee.getFirstName());
-            preparedStatement.setString(2, employee.getLastName());
-            preparedStatement.setString(3, employee.getCompanyName());
-            preparedStatement.executeUpdate();
+            if (!exists) {
+                successState = true;
+
+                //Create a prepared statement
+                preparedStatement = connection.prepareStatement(INSERT_QUERY);
+                preparedStatement.setString(1, employee.getFirstName().strip());
+                preparedStatement.setString(2, employee.getLastName().strip());
+                preparedStatement.setString(3, employee.getCompanyName().strip());
+                preparedStatement.executeUpdate();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,6 +119,8 @@ public enum EmployeeDataHandler {
             DatabaseConnection.disconnect();
             log.info("Successfully disconnected from DB");
         }
+
+        return successState;
     }
 
     public ObservableList<Employee> employeesObservableList(String companyName) {

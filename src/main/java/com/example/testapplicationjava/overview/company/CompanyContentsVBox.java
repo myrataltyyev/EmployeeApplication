@@ -72,9 +72,21 @@ public class CompanyContentsVBox extends VBox {
 
                 } else {
                     // Create new company
-                    CompanyDataHandler.INSTANCE.createCompany(
-                            new Company(companyName)
-                    );
+                    boolean successState = CompanyDataHandler.INSTANCE.createCompany(
+                            new Company(companyName));
+
+                    if (successState) {
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information");
+                        alert.setHeaderText("Successfully created");
+                    } else {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error in creation");
+                        alert.setContentText("Couldn't create the company. The company already exists.");
+                    }
+                    alert.getDialogPane().setStyle("-fx-font-size: 16px;");
+                    alert.showAndWait();
 
                     // Update the combo boxes
                     getCompanyListHBox().setCompaniesComboBox();            // company tab
