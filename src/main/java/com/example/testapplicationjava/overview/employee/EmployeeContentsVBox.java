@@ -24,14 +24,14 @@ public class EmployeeContentsVBox extends VBox {
         this.getChildren().add(getEmployeeCompanyListHBox());
     }
 
-    public EmployeeFirstNameHBox getEmployeeFirstNameHBox() {
+    protected EmployeeFirstNameHBox getEmployeeFirstNameHBox() {
         if (employeeFirstNameHBox == null) {
             employeeFirstNameHBox = new EmployeeFirstNameHBox();
         }
         return employeeFirstNameHBox;
     }
 
-    public EmployeeLastNameHBox getEmployeeLastNameHBox() {
+    protected EmployeeLastNameHBox getEmployeeLastNameHBox() {
         if (employeeLastNameHBox == null) {
             employeeLastNameHBox = new EmployeeLastNameHBox();
         }

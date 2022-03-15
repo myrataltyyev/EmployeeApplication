@@ -30,7 +30,7 @@ public class EmployeeFirstNameHBox extends HBox {
         return fNameLabel;
     }
 
-    private TextField getfNameTextField() {
+    protected TextField getfNameTextField() {
         if (fNameTextField == null) {
             fNameTextField = new TextField();
         }

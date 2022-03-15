@@ -33,7 +33,7 @@ public enum EmployeeDataHandler {
                     "WHERE c.cid=e.cid AND c.company_name = ?;";
     private final String INSERT_QUERY =
             "INSERT INTO \"Employee\"(first_name, last_name, cid) " +
-                    "SELECT ?, ? " +
+                    "SELECT ?, ?, cid " +
                     "FROM \"Company\" " +
                     "WHERE company_name = ?;";
 
@@ -57,7 +57,6 @@ public enum EmployeeDataHandler {
 
                 firstName = resultSet.getString("first_name");
                 lastName = resultSet.getString("last_name");
-                companyName = resultSet.getString("company_name");
 
                 employees.add(new Employee(firstName, lastName, companyName));
             }
@@ -89,6 +88,7 @@ public enum EmployeeDataHandler {
         } catch (SQLException e) {
             e.printStackTrace();
             log.error(e.getMessage());
+
         } finally {
             DatabaseConnection.disconnect();
             log.info("Successfully disconnected from DB");

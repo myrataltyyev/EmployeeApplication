@@ -7,6 +7,7 @@ import com.example.testapplicationjava.overview.OverviewTabPane;
 import com.example.testapplicationjava.overview.employee.EmployeeCompanyListHBox;
 import com.example.testapplicationjava.overview.employee.EmployeeTab;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class CompanyContentsVBox extends VBox {
     private CompanyEmployeesTableView companyEmployeesTableView = null;
     private Button createCompanyButton = null;
     private EmployeeTab employeeTab = null;
+    private Alert alert = null;
 
     public CompanyContentsVBox() {
         init();
@@ -43,7 +45,7 @@ public class CompanyContentsVBox extends VBox {
         return companyNameHBox;
     }
 
-    private CompanyListHBox getCompanyListHBox() {
+    public CompanyListHBox getCompanyListHBox() {
         if (companyListHBox == null) {
             companyListHBox = new CompanyListHBox(this);
         }
@@ -54,21 +56,35 @@ public class CompanyContentsVBox extends VBox {
         if (createCompanyButton == null) {
             createCompanyButton = new Button("Create");
 
-            // Create new company
+            // Create a company
             createCompanyButton.setOnAction(event -> {
-                CompanyDataHandler.INSTANCE.createCompany(
-                        new Company(getCompanyNameHBox().getNameTextField().getText())
-                );
+                // Get the value and check
+                String companyName = getCompanyNameHBox().getNameTextField().getText();
+                if (companyName.equals("") || companyName.length() > 50) {
 
-                // Update the combo boxes
-                getCompanyListHBox().setCompaniesComboBox();            // in the company tab
-                getEmployeeCompanyListHBox().setCompaniesComboBox();    // in the employee tab
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error in creation");
+                    alert.setContentText("Couldn't create a company. Please, don't leave the fields empty " +
+                            "and look at the length of the name.");
+                    alert.showAndWait();
+
+                } else {
+                    // Create new company
+                    CompanyDataHandler.INSTANCE.createCompany(
+                            new Company(companyName)
+                    );
+
+                    // Update the combo boxes
+                    getCompanyListHBox().setCompaniesComboBox();            // in the company tab
+                    getEmployeeCompanyListHBox().setCompaniesComboBox();    // in the employee tab
+                }
             });
         }
         return createCompanyButton;
     }
 
-    protected CompanyEmployeesTableView getCompanyEmployeesTableView() {
+    public CompanyEmployeesTableView getCompanyEmployeesTableView() {
         if (companyEmployeesTableView == null) {
             companyEmployeesTableView = new CompanyEmployeesTableView(
                     EmployeeDataHandler.INSTANCE.employeesObservableList(null));

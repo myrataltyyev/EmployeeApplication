@@ -36,7 +36,7 @@ public class CompanyListHBox extends HBox {
         return selectCompanyLabel;
     }
 
-    private ComboBox getCompaniesComboBox() {
+    public ComboBox getCompaniesComboBox() {
         if (companiesComboBox == null) {
             companiesComboBox = new ComboBox(CompanyDataHandler.INSTANCE.companiesObservableList());
 

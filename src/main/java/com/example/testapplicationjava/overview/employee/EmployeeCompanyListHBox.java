@@ -26,7 +26,7 @@ public class EmployeeCompanyListHBox extends HBox {
         this.getChildren().add(getCompaniesComboBox());
     }
 
-    private ComboBox getCompaniesComboBox() {
+    protected ComboBox getCompaniesComboBox() {
         if (companiesComboBox == null) {
             companiesComboBox = new ComboBox(CompanyDataHandler.INSTANCE.companiesObservableList());
         }
