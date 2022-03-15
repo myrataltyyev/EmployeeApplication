@@ -14,7 +14,7 @@ public class EmployeeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.primaryStage = stage;
-        stage.setTitle("Link application");
+        stage.setTitle("Employee application");
         stage.setScene(getOverviewScene());
         stage.show();
     }
