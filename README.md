@@ -1,7 +1,6 @@
-# TestApplicationJava
-## Employee Application
+# Employee Application
 
-I called it Employee Application, couldn't find a better name. It is a desktop app. The java file with this name is the main file where everything starts. Class names correspond to the names of their parent clasess from (e.g. EmployeeMainBorderPane -> inherits BorderPane class).
+Employee app is a desktop app. The java file with this name is the main file where everything starts. Class names correspond to the names of their parent clasess from (e.g. EmployeeMainBorderPane -> inherits BorderPane class).
 
 **build.gradle** contains necessary dependencies and plugins.
 
